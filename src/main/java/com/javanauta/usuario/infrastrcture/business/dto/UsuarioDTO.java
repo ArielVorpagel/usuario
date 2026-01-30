@@ -1,7 +1,6 @@
 package com.javanauta.usuario.infrastrcture.business.dto;
 
 
-import com.javanauta.usuario.infrastrcture.entity.Telefone;
 import lombok.*;
 
 import java.util.List;
@@ -15,6 +14,6 @@ public class UsuarioDTO {
     private String nome;
     private String email;
     private String senha;
-    private List<EnderecoDTO> enderecoDTO;
-    private List<TelefoneDTO> telefoneDTO;
+    private List<EnderecoDTO> enderecos;
+    private List<TelefoneDTO> telefones;
 }
