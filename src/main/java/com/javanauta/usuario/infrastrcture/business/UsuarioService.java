@@ -5,6 +5,7 @@ import com.javanauta.usuario.infrastrcture.business.Converter.UsuarioConverter;
 import com.javanauta.usuario.infrastrcture.business.dto.UsuarioDTO;
 import com.javanauta.usuario.infrastrcture.entity.Usuario;
 import com.javanauta.usuario.infrastrcture.exceptions.ConflictExceptions;
+import com.javanauta.usuario.infrastrcture.exceptions.ResourceNotFoundException;
 import com.javanauta.usuario.infrastrcture.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,4 +39,10 @@ public class UsuarioService {
         return usuarioRepository.existsByEmail(email);
     }
 
+    public Usuario buscarUsuarioPorEmail(String email){
+        return usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Email não encontrado!! " + email));
+    }
+    public void deletaUsuarioPorEmail(String email){
+        usuarioRepository.deleteByEmail(email);
+    }
 }
