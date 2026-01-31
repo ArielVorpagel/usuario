@@ -64,6 +64,8 @@ public class UsuarioService {
         usuarioRepository.deleteByEmail(email);
     }
 
+
+
     public UsuarioDTO atualizaDadosUsuario(String token, UsuarioDTO usuarioDTO) {
         //Aqui eu salvo o email na vaiavel através do Token
         String email = jwtUtil.extraiEmailToken(token.substring(7));
@@ -82,6 +84,9 @@ public class UsuarioService {
         //salvo os dados do usuario no db_usuario, e logo após transformo em DTO
         return usuarioConverter.paraUsuarioDTO(usuarioRepository.save(usuario));
     }
+
+
+
     public EnderecoDTO atualizaEndereco(Long idEndereco, EnderecoDTO enderecoDTO){
 
         Endereco enderecoEntity = enderecoRepository.findById(idEndereco).orElseThrow(() ->
@@ -97,6 +102,30 @@ public class UsuarioService {
                 new ResourceNotFoundException("ID não encontrado " + idTelefone));
 
         Telefone telefone = usuarioConverter.updateTelefone(telefoneDTO, telefoneEntity);
+        return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefone));
+    }
+
+
+    public EnderecoDTO addEndereco(String token, EnderecoDTO enderecoDTO){
+        String email = jwtUtil.extraiEmailToken(token.substring(7));
+
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(()->
+                new ResourceNotFoundException("EMAIL não encontrado " + email));
+
+        Endereco endereco = usuarioConverter.paraEnderecoEntity(enderecoDTO, usuario.getId());
+
+        return usuarioConverter.paraEnderecoDTO(enderecoRepository.save(endereco));
+
+    }
+
+    public TelefoneDTO addTelefone(String token, TelefoneDTO telefoneDTO){
+        String email = jwtUtil.extraiEmailToken(token.substring(7));
+
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(()->
+                new ResourceNotFoundException("EMAIL não encontrado " + email));
+
+        Telefone telefone = usuarioConverter.parTelefoneEntity(telefoneDTO, usuario.getId());
+
         return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefone));
     }
 }
