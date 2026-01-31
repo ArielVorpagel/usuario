@@ -35,9 +35,9 @@ public class JwtUtil {
                 .parseClaimsJws(token) // Analisa o token JWT e obtém as claims
                 .getBody(); // Retorna o corpo das claims
     }
-
+    // Extrai também o email do token JWT
     // Extrai o nome de usuário do token JWT
-    public String extractUsername(String token) {
+    public String extraiEmailToken(String token) {
         // Obtém o assunto (nome de usuário) das claims do token
         return extractClaims(token).getSubject();
     }
@@ -48,10 +48,10 @@ public class JwtUtil {
         return extractClaims(token).getExpiration().before(new Date());
     }
 
-    // Valida o token JWT verificando o nome de usuário e se o token não está expirado
+    // Valida o token JWT verificando o nome (utilizado para Email também)de usuário e se o token não está expirado
     public boolean validateToken(String token, String username) {
         // Extrai o nome de usuário do token
-        final String extractedUsername = extractUsername(token);
+        final String extractedUsername = extraiEmailToken(token);
         // Verifica se o nome de usuário do token corresponde ao fornecido e se o token não está expirado
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
